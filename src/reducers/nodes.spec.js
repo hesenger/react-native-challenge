@@ -95,4 +95,75 @@ describe('Reducers::Nodes', () => {
 
     expect(reducer(appState, action)).toEqual(expected);
   });
+
+  it('should handle LOAD_BLOCK_FAIL', () => {
+    const appState = {
+      list: [
+        nodeA,
+        nodeB,
+      ],
+    };
+    const action = {type: ActionTypes.LOAD_BLOCK_FAIL, node: nodeA};
+    const expected = {
+      list: [
+        {
+          ...nodeA,
+          blocks: [],
+          blocksStatus: ActionTypes.LOAD_BLOCK_FAIL
+        },
+        nodeB,
+      ],
+    };
+
+    expect(reducer(appState, action)).toEqual(expected);
+  });
+
+  it('should handle LOAD_BLOCK_START', () => {
+    const appState = {
+      list: [
+        nodeA,
+        nodeB,
+      ],
+    };
+    const action = {type: ActionTypes.LOAD_BLOCK_START, node: nodeA};
+    const expected = {
+      list: [
+        {
+          ...nodeA,
+          blocks: [],
+          blocksStatus: ActionTypes.LOAD_BLOCK_START
+        },
+        nodeB,
+      ],
+    };
+
+    expect(reducer(appState, action)).toEqual(expected);
+  });
+
+  it('should handle LOAD_BLOCK_SUCCESS', () => {
+    const appState = {
+      list: [
+        nodeA,
+        nodeB,
+      ],
+    };
+    const action = {
+      type: ActionTypes.LOAD_BLOCK_SUCCESS, 
+      node: nodeA, 
+      res: { data: [{id: 1}] } 
+    };
+      
+    const expected = {
+      list: [
+        {
+          ...nodeA,
+          blocks: action.res.data,
+          blocksStatus: ActionTypes.LOAD_BLOCK_SUCCESS
+        },
+        nodeB,
+      ],
+    };
+
+    expect(reducer(appState, action)).toEqual(expected);
+  });
 });

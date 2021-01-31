@@ -48,3 +48,23 @@ export function checkNodeStatuses(list) {
     });
   };
 }
+
+export function loadBlocks(node) {
+  return async dispatch => {
+    try {
+      dispatch({ type: types.LOAD_BLOCK_START, node });
+      const res = await fetch(`${node.url}/api/v1/blocks`);
+
+      if (res.status >= 400) {
+        dispatch({ type: types.LOAD_BLOCK_FAIL, node });
+        return;
+      }
+
+      const json = await res.json();
+
+      dispatch({ type: types.LOAD_BLOCK_SUCCESS, node, res: json });
+    } catch (err) {
+      dispatch({ type: types.LOAD_BLOCK_FAIL, node });
+    }
+  };
+}

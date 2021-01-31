@@ -1,10 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { View, TouchableOpacity, StyleSheet } from "react-native";
+import { Text, View, TouchableOpacity, StyleSheet } from "react-native";
 import colors from "../constants/colors";
 import { Paper, Subtitle, BodyText, Caption } from "material-bread";
 import { Expander } from "./Expander";
 import Status from "./Status";
+import { Block, BlockStatus } from './Block';
+import { LOAD_BLOCK_FAIL, LOAD_BLOCK_START } from "../constants/actionTypes";
 
 const Node = ({ node, expanded, toggleNodeExpanded }) => (
   <TouchableOpacity onPress={() => toggleNodeExpanded(node)}>
@@ -23,11 +25,10 @@ const Node = ({ node, expanded, toggleNodeExpanded }) => (
         style={styles.secondaryHeading}
       />
       <Expander expanded={expanded} style={styles.icon(expanded)} />
-      {expanded && (
-        <View style={styles.heading}>
-          <BodyText type={1} text={"Blocks go here"} />
-        </View>
-      )}
+      {expanded && node.blocks.map(block => <Block key={block.id} block={block} />)}
+
+      {expanded && <BlockStatus node={node} />}
+
     </Paper>
   </TouchableOpacity>
 );
